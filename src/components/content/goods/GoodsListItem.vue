@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-      <img :src="goodsItem.show.img" alt="" />
+  <div class="goods-item" @click="itemClick">
+      <img :src="goodsItem.show.img" alt="" @load="imageLoad" />
       <div class="goods-info">
           <p>{{goodsItem.title}}</p>
           <span class="price">{{goodsItem.price}}</span>
@@ -20,7 +20,23 @@ export default {
           }
       }
   },
- 
+  methods: {
+    imageLoad(){
+      this.$bus.$emit('itemImageLoad') //this.$bus 事件总线 $emit发射 $on接收
+    },
+    itemClick(){//跳转详情页 也可以通过标签方式<router-link to="'/detail/'+iid">
+      //使用push跳转 有返回 后期直接调$router.go(-1);//返回上一层 使用replace跳转没有返回
+      //this.$route.params.id 可以拿到路由配置中url后面的参数  
+      this.$router.push('/detail/' + this.goodsItem.iid)
+      // this.$router.push({
+      //   path:'/detail',
+      //   query:{
+
+      //   }
+      // })
+      //如果是上面这个方式可以通过this.$route.query到拿传过去的参数
+    }
+  },
 }
 </script>
 
